@@ -69,7 +69,11 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
                 </ul>
                 <div className="pagination flex justify-center mt-20">
                   {pages.map(page => (
-                    <button key={page} onClick={() => paginate(page)} className={`page ${currentPage === page ? 'active bg-location-card' : 'bg-location-card'}`}>
+                    <button 
+                      key={page} 
+                      onClick={() => paginate(page)} 
+                      className={`page ${currentPage === page ? 'bg-red-500' : 'bg-location-card'} mr-4`}
+                    >
                       {page}
                     </button>
                   ))}

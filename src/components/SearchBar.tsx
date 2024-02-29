@@ -1,13 +1,14 @@
-// components/SearchBar.tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 enum SearchType {
-  Location = 'Location',
-  Resident = 'Resident',
+  Location = "Location",
+  Resident = "Resident",
 }
 
-const SearchBar: React.FC<{ onSearch: (searchTerm: string, searchType: SearchType) => void }> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const SearchBar: React.FC<{
+  onSearch: (searchTerm: string, searchType: SearchType) => void;
+}> = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState(SearchType.Location); // Default to searching for locations
 
   const handleSearch = () => {
@@ -23,19 +24,20 @@ const SearchBar: React.FC<{ onSearch: (searchTerm: string, searchType: SearchTyp
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-black"
-          // ^-- Added text-black class to set text color to black
         />
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value as SearchType)}
           className="ml-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-black"
-          // ^-- Added text-black class to set text color to black
         >
           <option value={SearchType.Location}>Location</option>
           <option value={SearchType.Resident}>Resident</option>
         </select>
       </div>
-      <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleSearch}>
+      <button
+        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+        onClick={handleSearch}
+      >
         Search
       </button>
     </div>
@@ -43,4 +45,3 @@ const SearchBar: React.FC<{ onSearch: (searchTerm: string, searchType: SearchTyp
 };
 
 export default SearchBar;
-

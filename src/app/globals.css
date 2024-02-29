@@ -31,3 +31,8 @@ body {
     text-wrap: balance;
   }
 }
+
+.bg-location-card {
+  background-color: #01153e;
+}
+

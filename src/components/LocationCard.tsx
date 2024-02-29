@@ -1,4 +1,3 @@
-// components/LocationCard.tsx
 import { useState, useEffect } from 'react';
 import Modal from './Modal';
 
@@ -6,13 +5,13 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
   const [showResidents, setShowResidents] = useState(false);
   const [residents, setResidents] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const residentsPerPage = 4; // Display 4 residents per page
 
   const fetchResidents = async (urls: string[]) => {
     setLoading(true);
     try {
-      const promises = urls.map(url =>
-        fetch(url).then(res => res.json())
-      );
+      const promises = urls.map(url => fetch(url).then(res => res.json()));
       const results = await Promise.all(promises);
       setResidents(results);
     } catch (error) {
@@ -24,17 +23,27 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
 
   useEffect(() => {
     if (showResidents) {
-      fetchResidents(location.residents);
+      fetchResidents(location.residents.slice(0, 20)); // Limiting to first 20 for performance
     }
   }, [showResidents, location.residents]);
 
+  const indexOfLastResident = currentPage * residentsPerPage;
+  const indexOfFirstResident = indexOfLastResident - residentsPerPage;
+  const currentResidents = residents.slice(indexOfFirstResident, indexOfLastResident);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(residents.length / residentsPerPage);
+  const pages = [...Array(totalPages).keys()].map(num => num + 1); // Create an array of page numbers
+
   const toggleResidentsModal = () => {
     setShowResidents(!showResidents);
+    setCurrentPage(1); // Reset to first page when re-opened
   };
 
   return (
     <>
-      <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer" onClick={toggleResidentsModal}>
+      <div className="bg-location-card p-4 rounded-lg shadow-md cursor-pointer" onClick={toggleResidentsModal}>
         <h2 className="text-xl font-bold">{location.name}</h2>
         <p className="text-gray-600">{location.type}</p>
       </div>
@@ -45,17 +54,27 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
             {loading ? (
               <p>Loading residents...</p>
             ) : (
-              <ul>
-                {residents.map((resident, index) => (
-                  <li key={index} className="flex items-center mb-2">
-                    <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2" />
-                    <div>
-                      <p className="font-bold">{resident.name}</p>
-                      <p className="text-sm">{resident.status}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <ul>
+                  {currentResidents.map((resident, index) => (
+                    <li key={index} className="resident-card bg-location-card p-4 rounded-lg shadow-md flex items-center mb-2">
+                      <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2" />
+                      <div>
+                        <p className="font-bold text-navy">{resident.name}</p>
+                        <p className="text-sm text-navy">Status: {resident.status}</p>
+                        <p className="text-sm text-navy">Episodes: {resident.episode.length}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="pagination flex space-x-2">
+                  {pages.map(page => (
+                    <button key={page} onClick={() => paginate(page)} className={`page ${currentPage === page ? 'active' : ''}`}>
+                      {page}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </Modal>

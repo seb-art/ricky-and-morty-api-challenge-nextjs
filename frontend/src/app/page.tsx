@@ -1,8 +1,10 @@
 'use client';
+// pages/index.tsx
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import LocationCard from '../components/LocationCard';
 import SearchBar from '../components/SearchBar';
+import Link from 'next/link';
 
 enum SearchType {
   Location = 'Location',

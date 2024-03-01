@@ -1,5 +1,7 @@
+// LocationCard.tsx
 import { useState, useEffect } from 'react';
 import Modal from './Modal';
+import Link from 'next/link';
 
 const LocationCard: React.FC<{ location: any }> = ({ location }) => {
   const [showResidents, setShowResidents] = useState(false);
@@ -58,7 +60,11 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
                 <ul>
                   {currentResidents.map((resident, index) => (
                     <li key={index} className="resident-card bg-location-card p-4 rounded-lg shadow-md flex items-center mb-2">
-                      <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2" />
+                      <Link href={`/resident/${resident.id}`}>
+                        <a> {/* Remove the <a> tag */}
+                          <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2" />
+                        </a> {/* Remove the </a> tag */}
+                      </Link>
                       <div>
                         <p className="font-bold text-navy">{resident.name}</p>
                         <p className="text-sm text-navy">Status: {resident.status}</p>
@@ -88,3 +94,4 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
 };
 
 export default LocationCard;
+

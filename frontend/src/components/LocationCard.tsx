@@ -61,9 +61,7 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
                   {currentResidents.map((resident, index) => (
                     <li key={index} className="resident-card bg-location-card p-4 rounded-lg shadow-md flex items-center mb-2">
                       <Link href={`/resident/${resident.id}`}>
-                        <a> {/* Remove the <a> tag */}
-                          <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2" />
-                        </a> {/* Remove the </a> tag */}
+                        <img src={resident.image} alt={resident.name} className="w-10 h-10 rounded-full mr-2 cursor-pointer" />
                       </Link>
                       <div>
                         <p className="font-bold text-navy">{resident.name}</p>
@@ -78,7 +76,7 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
                     <button 
                       key={page} 
                       onClick={() => paginate(page)} 
-                      className={`page ${currentPage === page ? 'bg-red-500' : 'bg-location-card'} mr-4`}
+                      className={`page ${currentPage === page ? 'bg-red-500 text-white' : 'bg-location-card text-navy'} mr-4`}
                     >
                       {page}
                     </button>
@@ -94,4 +92,3 @@ const LocationCard: React.FC<{ location: any }> = ({ location }) => {
 };
 
 export default LocationCard;
-
